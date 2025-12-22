@@ -48,5 +48,14 @@
         * This class will calculate the PES in relation to the change in supply. 
       * showFindings() 
         * This method will gather the data that has been put into the ___ Array and explain how price changes have affected the PED of the product as well as the PES. 
-        
-      
+  * Overview: What my objective is: 
+    * I want to prove the price elasticity of demand
+    * And if possible, the price elasticity of supply.
+    * I will use: 
+      * Data structures - Queues/LinkedList, ArrayList etc. 
+      * OOPs (completely)
+      * Local/DateTime
+      * Maths package for calculations
+      * UML Diagram
+      * Exception Handling
+      * Data Validation
