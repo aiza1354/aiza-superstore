@@ -13,5 +13,6 @@ public class Shopper {
         this.isLowIncome = isLowIncome;
     }
 
+
 }
 

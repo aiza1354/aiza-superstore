@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 public class Product {
     int id;
     String name;
