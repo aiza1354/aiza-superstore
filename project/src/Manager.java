@@ -50,6 +50,41 @@ public class Manager {
         double PED = changeInQuantitySold / changeInPrice;
             System.out.println("PED of bread = " + PED );
         }
+
+    public void displayShelf(ArrayList<ProductDetails> productHistory, ArrayList<Product> shelf) {
+        for (int i = 0; i < shelf.size(); i++) {
+            Product displayProduct = shelf.get(i);
+            ProductDetails latest =  getLatestProductDetails(productHistory,displayProduct );
+            System.out.print("Item: " + displayProduct.name);
+            if (latest != null) {
+                System.out.println(" : Price: £" + latest.priceAtTime + " : Sold: " + latest.quantitySold);
+            } else {
+                System.out.println(" : No data.");
+            }
+        }
+
     }
+    // we are getting the array list first of producthistory, which is made up of productDetails
+    // we also get Product
+    // we loop through product history backwards (hence, *i* is decreasing).
+    // Then, from ProductDetails we choose a variable name, current tp get from PH.
+    // If current.product id (which we get by looping through product history) matches the Product's product id
+    // then we return the found product!
+    // Otherwise, we return null
+    // And + throw an exception if for e.g something crashes!
+    public ProductDetails getLatestProductDetails(ArrayList<ProductDetails> productHistory, Product product) {
+        try {
+            for (int i = productHistory.size() - 1; i >= 0; i--) {
+                ProductDetails current = productHistory.get(i);
+                if (current.productId == product.id) {
+                    return current;
+                }
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        return null;
+    }
+}
 
 
