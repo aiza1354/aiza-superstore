@@ -1,10 +1,27 @@
 public class Product {
     private static int counter = 0;
 
-    int id;
-    String name;
-    boolean isNecessity = true;
-    Double price;
+    private int id;
+    private String name;
+    private boolean isNecessity = true;
+    private double price;
+
+    // getter so that other classes can use ID etc. if needed
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean getIsNecessity() {
+        return isNecessity;
+    }
+
+    public double getPrice() {
+        return price;
+    }
 
     public Product(String name, boolean isNecessity, Double price) {
        // this automatically increments ID whenever a product is created.
@@ -13,4 +30,9 @@ public class Product {
         this.isNecessity = isNecessity;
         this.price = price;
     }
+    @Override
+    public String toString (){
+        return getId() + getName() + getIsNecessity() + getPrice();
+    }
 }
+

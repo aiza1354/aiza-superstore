@@ -1,18 +1,9 @@
-import java.util.Scanner;
-public class Shopper {
-    String name;
-    String gender;
-    int age;
+public class Shopper extends Person{
     boolean isLowIncome;
 
-    public Shopper(String name, String gender, int age,
-                   boolean isLowIncome) {
-        this.name = name;
-        this.gender = gender;
-        this.age = age;
+    public Shopper(String name, int age, String gender, boolean isLowIncome) {
+        super(name, age, gender);
         this.isLowIncome = isLowIncome;
     }
-
-
 }
 

@@ -2,13 +2,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.lang.Math;
 
-public class Manager {
-    String name;
-    int age;
+public class Manager extends Person{
 
-    public Manager(String name, int age) {
-        this.name = name;
-        this.age = age;
+    public Manager(String name, int age, String gender) {
+        super(name, age, gender);
     }
 
     // create method that will add product to the shelf
@@ -43,7 +40,7 @@ public class Manager {
             ArrayList<ProductDetails> currentProductHistory = new ArrayList<>();
             for (int i = 0; i < productHistory.size(); i++) {
                 ProductDetails currentProductDetails = productHistory.get(i);
-                if (currentProductDetails.productId == product.id) {
+                if (currentProductDetails.productId == product.getId()) {
                     currentProductHistory.add(currentProductDetails);
                 }
             }
@@ -86,9 +83,8 @@ public class Manager {
                 String elasticity = findElasticity(PEDOfItem);
 
                 ProductDetails latest = getLatestProductDetails(productHistory, displayProduct);
-                System.out.print("Item: " + displayProduct.name);
+                System.out.print("Item: " + displayProduct.getName());
                 if (latest != null) {
-                    //Item: Addictive Substance : Price: £2.6 : Sold: 3 PED: Some Number
                     System.out.println(" , Price: £" + latest.priceAtTime + " , Sold: " + latest.quantitySold + " , PED: " + PEDOfItem + " , Elasticity: " + elasticity);
                 } else {
                     System.out.println(" : No data.");
@@ -112,7 +108,7 @@ public class Manager {
         try {
             for (int i = productHistory.size() - 1; i >= 0; i--) {
                 ProductDetails current = productHistory.get(i);
-                if (current.productId == product.id) {
+                if (current.productId == product.getId()) {
                     return current;
                 }
             }
