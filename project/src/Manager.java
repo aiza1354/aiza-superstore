@@ -1,5 +1,6 @@
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
+import java.lang.Math;
 
 public class Manager {
     String name;
@@ -11,9 +12,8 @@ public class Manager {
     }
 
     // create method that will add product to the shelf
-    public void addProductToShelf(Product product, ArrayList<Product> shelf){
+    public void addProductToShelf(Product product, ArrayList<Product> shelf) {
         shelf.add(product);
-        System.out.println("This is the size of the shelf: " + shelf.size());
     }
     //TODO: Move these functionalities to product class
 
@@ -22,13 +22,13 @@ public class Manager {
     // if you see that an item that is being bought profusely,
     // you increase the price if it is inelastic (necessary/addictive substance/bread).
 
-    public void addProductHistory (ProductDetails productDetails,
-                ArrayList <ProductDetails> productHistory){
+    public void addProductHistory(ProductDetails productDetails,
+                                  ArrayList<ProductDetails> productHistory) {
         productHistory.add(productDetails);
-        }
+    }
 
-
-    public void  calculatePED( ArrayList<ProductDetails> productHistory) {
+    /// product is the variable assigned to the item we are calculating the PED
+    public double calculatePED(ArrayList<ProductDetails> productHistory, Product product) {
         // % change in quantity =
         // // day 2 bread PED =  day 2 price - day 1 price / day 1  x 100
         // % change in quantity / % change in price
@@ -36,34 +36,69 @@ public class Manager {
 
         //TODO: Sort the array by day for each product(WHY???)
         //TODO: Expand this logic to more than one Item
+        // Find all productHistory of particular product, this will return arraylist
+        // then sort the arraylist by day
 
-        double currentPrice = productHistory.get(productHistory.size() -1).priceAtTime;
-        double previousPrice = productHistory.get(productHistory.size()-2).priceAtTime;
-
-
-        double currentQuantitySold = productHistory.get(productHistory.size()-1).quantitySold;
-        double previousQuantitySold = productHistory.get(productHistory.size()-2).quantitySold;
-
-        double changeInPrice = ((currentPrice - previousPrice) / previousPrice) * 100;
-        double changeInQuantitySold = ((currentQuantitySold - previousQuantitySold) / previousQuantitySold) * 100;
-
-        double PED = changeInQuantitySold / changeInPrice;
-            System.out.println("PED of bread = " + PED );
-        }
-
-    public void displayShelf(ArrayList<ProductDetails> productHistory, ArrayList<Product> shelf) {
-        for (int i = 0; i < shelf.size(); i++) {
-            Product displayProduct = shelf.get(i);
-            ProductDetails latest =  getLatestProductDetails(productHistory,displayProduct );
-            System.out.print("Item: " + displayProduct.name);
-            if (latest != null) {
-                System.out.println(" : Price: £" + latest.priceAtTime + " : Sold: " + latest.quantitySold);
-            } else {
-                System.out.println(" : No data.");
+        try {
+            ArrayList<ProductDetails> currentProductHistory = new ArrayList<>();
+            for (int i = 0; i < productHistory.size(); i++) {
+                ProductDetails currentProductDetails = productHistory.get(i);
+                if (currentProductDetails.productId == product.id) {
+                    currentProductHistory.add(currentProductDetails);
+                }
             }
-        }
+            if (currentProductHistory.size() < 2) {
+                return 0.0;
+            }
+            //Sort the currentProductHistory arrayList
+            currentProductHistory.sort(Comparator.comparingInt(a -> a.day));
 
+            double currentPrice = currentProductHistory.get(currentProductHistory.size() - 1).priceAtTime;
+            double previousPrice = currentProductHistory.get(currentProductHistory.size() - 2).priceAtTime;
+
+            double currentQuantitySold = currentProductHistory.get(currentProductHistory.size() - 1).quantitySold;
+            double previousQuantitySold = currentProductHistory.get(currentProductHistory.size() - 2).quantitySold;
+
+            double changeInPrice = ((currentPrice - previousPrice) / previousPrice) * 100;
+            double changeInQuantitySold = ((currentQuantitySold - previousQuantitySold) / previousQuantitySold) * 100;
+
+            return changeInQuantitySold / changeInPrice;
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        return 0;
     }
+
+    // Parameters : 2 ArrayLists, productHistory  (of Product Details)
+    // Shelf (made of Product (s))
+    // We loop through shelf, because PH only exists if a product exists in shelf
+    // (dependent on shelf)
+    // We are taking each product from "Shelf" and that is under the vairable displayProduct
+    // We take all the productDetails from Ph and assign it under latest
+    // (we
+    public void displayShelf(ArrayList<ProductDetails> productHistory,
+                             ArrayList<Product> shelf) {
+        try {
+            for (int i = 0; i < shelf.size(); i++) {
+                Product displayProduct = shelf.get(i);
+
+                double PEDOfItem = calculatePED(productHistory, displayProduct);
+                String elasticity = findElasticity(PEDOfItem);
+
+                ProductDetails latest = getLatestProductDetails(productHistory, displayProduct);
+                System.out.print("Item: " + displayProduct.name);
+                if (latest != null) {
+                    //Item: Addictive Substance : Price: £2.6 : Sold: 3 PED: Some Number
+                    System.out.println(" , Price: £" + latest.priceAtTime + " , Sold: " + latest.quantitySold + " , PED: " + PEDOfItem + " , Elasticity: " + elasticity);
+                } else {
+                    System.out.println(" : No data.");
+                }
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
     // we are getting the array list first of producthistory, which is made up of productDetails
     // we also get Product
     // we loop through product history backwards (hence, *i* is decreasing).
@@ -72,7 +107,8 @@ public class Manager {
     // then we return the found product!
     // Otherwise, we return null
     // And + throw an exception if for e.g something crashes!
-    public ProductDetails getLatestProductDetails(ArrayList<ProductDetails> productHistory, Product product) {
+    public ProductDetails getLatestProductDetails(ArrayList<ProductDetails> productHistory,
+                                                  Product product) {
         try {
             for (int i = productHistory.size() - 1; i >= 0; i--) {
                 ProductDetails current = productHistory.get(i);
@@ -85,6 +121,16 @@ public class Manager {
         }
         return null;
     }
-}
 
+    public String findElasticity(double PED) {
+        double absolutePED = Math.abs(PED);
+        if (absolutePED < 1) {
+            return "Inelastic";
+        } else if (absolutePED > 1) {
+            return "Elastic";
+        } else {
+            return "Unit Elastic";
+        }
+    }
+}
 

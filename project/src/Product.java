@@ -1,5 +1,5 @@
 public class Product {
-    int counter = 0;
+    private static int counter = 0;
 
     int id;
     String name;
