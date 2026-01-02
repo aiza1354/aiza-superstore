@@ -1,5 +1,5 @@
 public class Product {
-    private static int counter = 0;
+    private static int counter = 1;
 
     private int id;
     private String name;
@@ -32,7 +32,6 @@ public class Product {
     }
     @Override
     public String toString (){
-        return getId() + getName() + getIsNecessity() + getPrice();
+        return getId() + " " + getName() + " " + getIsNecessity() + " " + getPrice();
     }
 }
-

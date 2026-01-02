@@ -18,6 +18,7 @@ public class Main {
         Product bread = new Product( "Bread", true, 2.00);
         Product steak = new Product( "Steak", false, 10.50);
 
+
         ArrayList<Product> shelf = new ArrayList<>();
         Manager storeManager = new Manager("Alex", 32, "male");
         storeManager.addProductToShelf(addictiveSubstance, shelf);
@@ -35,6 +36,17 @@ public class Main {
         storeManager.addProductHistory(steakDetailsDay1,productHistory);
         storeManager.addProductHistory(steakDetailsDay2,productHistory);
         storeManager.displayShelf(productHistory, shelf);
+
+        // Get latest price of the item sold
+        ProductDetails breadDetail = storeManager.getLatestProductDetails(productHistory, bread);
+        // Add the item to the cart
+        CartItem cartItem1 = new CartItem(bread, breadDetail.priceAtTime,2);
+        CartItem cartItem2 = new CartItem(bread, breadDetail.priceAtTime,4);
+        aiza.addToCart(cartItem1);
+        aiza.addToCart(cartItem2);
+
+        // Calculate the total
+        aiza.calculateTotal(aiza.cart);
     }
 }
 
