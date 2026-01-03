@@ -44,9 +44,9 @@ public class Main {
         CartItem cartItem2 = new CartItem(bread, breadDetail.priceAtTime,4);
         aiza.addToCart(cartItem1);
         aiza.addToCart(cartItem2);
-
         // Calculate the total
         aiza.calculateTotal(aiza.cart);
+
     }
 }
 

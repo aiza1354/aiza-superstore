@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.lang.Math;
 
-public class Manager extends Person{
+public class Manager extends Person {
 
     public Manager(String name, int age, String gender) {
         super(name, age, gender);
@@ -81,11 +81,16 @@ public class Manager extends Person{
 
                 double PEDOfItem = calculatePED(productHistory, displayProduct);
                 String elasticity = findElasticity(PEDOfItem);
-
                 ProductDetails latest = getLatestProductDetails(productHistory, displayProduct);
                 System.out.print("Item: " + displayProduct.getName());
                 if (latest != null) {
-                    System.out.println(" , Price: £" + latest.priceAtTime + " , Sold: " + latest.quantitySold + " , PED: " + PEDOfItem + " , Elasticity: " + elasticity);
+                    double autoAdjustedPrice = autoPriceAdjuster(elasticity, latest.priceAtTime);
+                    // Add new item to productHistory
+                    // create new productDetail
+                    ProductDetails newProductDetails = new ProductDetails(latest.productId,
+                            latest.day + 1, latest.quantitySold, autoAdjustedPrice);
+                    productHistory.add(newProductDetails);
+                    System.out.println(" , Price: £" + latest.priceAtTime + " , Sold: " + latest.quantitySold + " , PED: " + PEDOfItem + " , Elasticity: " + elasticity + ", Auto adjusted price 👩🏽‍💼: £" + autoAdjustedPrice);
                 } else {
                     System.out.println(" : No data.");
                 }
@@ -127,6 +132,28 @@ public class Manager extends Person{
         } else {
             return "Unit Elastic";
         }
+    }
+    // Create a function which auto-adjusts the price of an item, depending on its elasticity.
+    // If Elastic and PED is negative (Law of demand: Price up = Quantity down)
+    // Sales dropped significantly after price hike, let's lower it back
+    // If it is Inelastic + necessity
+    // Demand didn't drop much even if price changed, let's increase profit
+
+    public double autoPriceAdjuster(String elasticity, double priceAtTime) {
+        // find the latest price of a product, find its inelasticity, and change price in ProductH
+        double adjustedPrice;
+        if (elasticity.equals("Elastic")) {
+            adjustedPrice = (priceAtTime - (priceAtTime * 0.2));
+        } else if (elasticity.equals("Inelastic")) {
+            adjustedPrice = (priceAtTime + (priceAtTime * 0.2));
+        } else {
+            return priceAtTime;
+        }
+        // check min value after autoPrice adjustment
+        if (adjustedPrice < 0.50) {
+            adjustedPrice = 0.50;
+        }
+        return adjustedPrice;
     }
 }
 
