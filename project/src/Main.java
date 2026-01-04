@@ -11,9 +11,6 @@ public class Main {
         // TODO: Overriding	Create a toString() method in Product to replace manual print statements.
         // TODO: Aggregation	Keep the shelf as an external list passed to the Manager.
 
-        Shopper baba = new Shopper("Baba", 56, "male", true);
-        Shopper aiza = new Shopper("Aiza", 16, "female", false);
-
         Product addictiveSubstance = new Product( "Addictive Substance", true, 20.50);
         Product bread = new Product( "Bread", true, 2.00);
         Product steak = new Product( "Steak", false, 10.50);
@@ -31,10 +28,20 @@ public class Main {
         ProductDetails steakDetailsDay1 = new ProductDetails(steak.getId(), 1, 4, steak.getPrice());
         ProductDetails steakDetailsDay2 = new ProductDetails(steak.getId(), 2, 6, steak.getPrice()-1);
 
+        ProductDetails addictiveSubstanceDay1 = new ProductDetails (addictiveSubstance.getId(), 1, 5, 20.50);
+        ProductDetails addictiveSubstanceDay2 = new ProductDetails(addictiveSubstance.getId(), 2, 4, 21.00);
+
         storeManager.addProductHistory(breadDetailsDay1,productHistory);
         storeManager.addProductHistory(breadDetailsDay2,productHistory);
         storeManager.addProductHistory(steakDetailsDay1,productHistory);
         storeManager.addProductHistory(steakDetailsDay2,productHistory);
+
+        storeManager.addProductHistory(addictiveSubstanceDay1, productHistory);
+        storeManager.addProductHistory(addictiveSubstanceDay2, productHistory);
+
+        storeManager.implementAdjustedPrice(productHistory, shelf);
+
+
         storeManager.displayShelf(productHistory, shelf);
 
         // Get latest price of the item sold
@@ -42,11 +49,14 @@ public class Main {
         // Add the item to the cart
         CartItem cartItem1 = new CartItem(bread, breadDetail.getPriceAtTime(),2);
         CartItem cartItem2 = new CartItem(bread, breadDetail.getPriceAtTime(),4);
+
+        Shopper baba = new Shopper("Baba", 56, "male", true);
+        Shopper aiza = new Shopper("Aiza", 16, "female", false);
+
         aiza.addToCart(cartItem1);
         aiza.addToCart(cartItem2);
         // Calculate the total
         aiza.calculateTotal(aiza.cart);
-
     }
 }
 

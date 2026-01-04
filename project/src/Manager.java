@@ -84,19 +84,34 @@ public class Manager extends Person {
         try {
             for (int i = 0; i < shelf.size(); i++) {
                 Product displayProduct = shelf.get(i);
+                    System.out.println( "Item: " + displayProduct.getName() + ", Price: " +  displayProduct.getPrice()+ " , PED: " + displayProduct.getCurrentPED() + " , Elasticity: " + displayProduct.getCurrentElasticity());
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }
 
-                double PEDOfItem = calculatePED(productHistory, displayProduct);
-                String elasticity = findElasticity(PEDOfItem);
+    public void implementAdjustedPrice (ArrayList<ProductDetails> productHistory,
+                             ArrayList<Product> shelf) {
+        try {
+            for (int i = 0; i < shelf.size(); i++) {
+                Product displayProduct = shelf.get(i);
                 ProductDetails latest = getLatestProductDetails(productHistory, displayProduct);
-                System.out.print("Item: " + displayProduct.getName());
                 if (latest != null) {
+                    double PEDOfItem = calculatePED(productHistory, displayProduct);
+                    displayProduct.setCurrentPED(PEDOfItem);
+
+                    String elasticity = findElasticity(PEDOfItem);
+                    displayProduct.setCurrentElasticity(elasticity);
+
                     double autoAdjustedPrice = autoPriceAdjuster(elasticity, latest.getPriceAtTime());
+                    displayProduct.setPrice(autoAdjustedPrice);
                     // Add new item to productHistory
                     // create new productDetail
-                    ProductDetails newProductDetails = new ProductDetails(latest.getProductId(),
-                            latest.getDay() + 1, latest.getQuantitySold(), autoAdjustedPrice);
+                    ProductDetails newProductDetails = new ProductDetails(displayProduct.getId(),
+                            latest.getDay() + 1, 0, autoAdjustedPrice);
                     productHistory.add(newProductDetails);
-                    System.out.println(" , Price: £" + latest.getPriceAtTime() + " , Sold: " + latest.getQuantitySold() + " , PED: " + PEDOfItem + " , Elasticity: " + elasticity + ", Auto adjusted price 👩🏽‍💼: £" + autoAdjustedPrice);
+
                 } else {
                     System.out.println(" : No data.");
                 }
@@ -105,6 +120,7 @@ public class Manager extends Person {
             System.err.println(e.getMessage());
         }
     }
+    // WORKING ON.....
 
     // we are getting the array list first of producthistory, which is made up of productDetails
     // we also get Product

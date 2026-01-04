@@ -5,6 +5,8 @@ public class Product {
     private String name;
     private boolean isNecessity = true;
     private double price;
+    private double currentPED;
+    private String currentElasticity = "Unknown";
 
     // getter so that other classes can use ID etc. if needed
     public int getId() {
@@ -30,6 +32,31 @@ public class Product {
         this.isNecessity = isNecessity;
         this.price = price;
     }
+
+
+
+    // currentPed and currentElasticity as attribute
+
+    public double getCurrentPED() {
+        return currentPED;
+    }
+
+    public String getCurrentElasticity() {
+        return currentElasticity;
+    }
+
+    public void setCurrentPED(double PED){
+        this.currentPED = PED;
+    }
+
+    public void setCurrentElasticity(String elasticity){
+        this.currentElasticity = elasticity;
+    }
+
+    public void setPrice(double autoAdjustedPrice){
+        this.price = autoAdjustedPrice;
+    }
+
     @Override
     public String toString (){
         return getId() + " " + getName() + " " + getIsNecessity() + " " + getPrice();
