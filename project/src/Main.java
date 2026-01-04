@@ -40,8 +40,8 @@ public class Main {
         // Get latest price of the item sold
         ProductDetails breadDetail = storeManager.getLatestProductDetails(productHistory, bread);
         // Add the item to the cart
-        CartItem cartItem1 = new CartItem(bread, breadDetail.priceAtTime,2);
-        CartItem cartItem2 = new CartItem(bread, breadDetail.priceAtTime,4);
+        CartItem cartItem1 = new CartItem(bread, breadDetail.getPriceAtTime(),2);
+        CartItem cartItem2 = new CartItem(bread, breadDetail.getPriceAtTime(),4);
         aiza.addToCart(cartItem1);
         aiza.addToCart(cartItem2);
         // Calculate the total

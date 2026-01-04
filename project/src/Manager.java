@@ -3,6 +3,12 @@ import java.util.Comparator;
 import java.lang.Math;
 
 public class Manager extends Person {
+    // in case we need to change the variable, it is available at one place + constant
+    private static final double elasticDiscount = 0.20;
+    private static final double inelasticMarkup = 0.20;
+    private static final double minimumPrice = 0.50;
+    private static final String elastic = "Elastic";
+    private static final String inelastic = "Inelastic";
 
     public Manager(String name, int age, String gender) {
         super(name, age, gender);
@@ -40,7 +46,7 @@ public class Manager extends Person {
             ArrayList<ProductDetails> currentProductHistory = new ArrayList<>();
             for (int i = 0; i < productHistory.size(); i++) {
                 ProductDetails currentProductDetails = productHistory.get(i);
-                if (currentProductDetails.productId == product.getId()) {
+                if (currentProductDetails.getProductId() == product.getId()) {
                     currentProductHistory.add(currentProductDetails);
                 }
             }
@@ -48,13 +54,13 @@ public class Manager extends Person {
                 return 0.0;
             }
             //Sort the currentProductHistory arrayList
-            currentProductHistory.sort(Comparator.comparingInt(a -> a.day));
+            currentProductHistory.sort(Comparator.comparingInt(a -> a.getDay()));
 
-            double currentPrice = currentProductHistory.get(currentProductHistory.size() - 1).priceAtTime;
-            double previousPrice = currentProductHistory.get(currentProductHistory.size() - 2).priceAtTime;
+            double currentPrice = currentProductHistory.get(currentProductHistory.size() - 1).getPriceAtTime();
+            double previousPrice = currentProductHistory.get(currentProductHistory.size() - 2).getPriceAtTime();
 
-            double currentQuantitySold = currentProductHistory.get(currentProductHistory.size() - 1).quantitySold;
-            double previousQuantitySold = currentProductHistory.get(currentProductHistory.size() - 2).quantitySold;
+            double currentQuantitySold = currentProductHistory.get(currentProductHistory.size() - 1).getQuantitySold();
+            double previousQuantitySold = currentProductHistory.get(currentProductHistory.size() - 2).getQuantitySold();
 
             double changeInPrice = ((currentPrice - previousPrice) / previousPrice) * 100;
             double changeInQuantitySold = ((currentQuantitySold - previousQuantitySold) / previousQuantitySold) * 100;
@@ -84,13 +90,13 @@ public class Manager extends Person {
                 ProductDetails latest = getLatestProductDetails(productHistory, displayProduct);
                 System.out.print("Item: " + displayProduct.getName());
                 if (latest != null) {
-                    double autoAdjustedPrice = autoPriceAdjuster(elasticity, latest.priceAtTime);
+                    double autoAdjustedPrice = autoPriceAdjuster(elasticity, latest.getPriceAtTime());
                     // Add new item to productHistory
                     // create new productDetail
-                    ProductDetails newProductDetails = new ProductDetails(latest.productId,
-                            latest.day + 1, latest.quantitySold, autoAdjustedPrice);
+                    ProductDetails newProductDetails = new ProductDetails(latest.getProductId(),
+                            latest.getDay() + 1, latest.getQuantitySold(), autoAdjustedPrice);
                     productHistory.add(newProductDetails);
-                    System.out.println(" , Price: £" + latest.priceAtTime + " , Sold: " + latest.quantitySold + " , PED: " + PEDOfItem + " , Elasticity: " + elasticity + ", Auto adjusted price 👩🏽‍💼: £" + autoAdjustedPrice);
+                    System.out.println(" , Price: £" + latest.getPriceAtTime() + " , Sold: " + latest.getQuantitySold() + " , PED: " + PEDOfItem + " , Elasticity: " + elasticity + ", Auto adjusted price 👩🏽‍💼: £" + autoAdjustedPrice);
                 } else {
                     System.out.println(" : No data.");
                 }
@@ -113,7 +119,7 @@ public class Manager extends Person {
         try {
             for (int i = productHistory.size() - 1; i >= 0; i--) {
                 ProductDetails current = productHistory.get(i);
-                if (current.productId == product.getId()) {
+                if (current.getProductId() == product.getId()) {
                     return current;
                 }
             }
@@ -126,9 +132,9 @@ public class Manager extends Person {
     public String findElasticity(double PED) {
         double absolutePED = Math.abs(PED);
         if (absolutePED < 1) {
-            return "Inelastic";
+            return inelastic;
         } else if (absolutePED > 1) {
-            return "Elastic";
+            return elastic;
         } else {
             return "Unit Elastic";
         }
@@ -142,16 +148,16 @@ public class Manager extends Person {
     public double autoPriceAdjuster(String elasticity, double priceAtTime) {
         // find the latest price of a product, find its inelasticity, and change price in ProductH
         double adjustedPrice;
-        if (elasticity.equals("Elastic")) {
-            adjustedPrice = (priceAtTime - (priceAtTime * 0.2));
-        } else if (elasticity.equals("Inelastic")) {
-            adjustedPrice = (priceAtTime + (priceAtTime * 0.2));
+        if (elasticity.equals(elastic)) {
+            adjustedPrice = (priceAtTime - (priceAtTime * elasticDiscount));
+        } else if (elasticity.equals(inelastic)) {
+            adjustedPrice = (priceAtTime + (priceAtTime * inelasticMarkup));
         } else {
             return priceAtTime;
         }
         // check min value after autoPrice adjustment
-        if (adjustedPrice < 0.50) {
-            adjustedPrice = 0.50;
+        if (adjustedPrice < minimumPrice) {
+            adjustedPrice = minimumPrice;
         }
         return adjustedPrice;
     }
