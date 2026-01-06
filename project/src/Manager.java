@@ -79,8 +79,7 @@ public class Manager extends Person {
     // We are taking each product from "Shelf" and that is under the vairable displayProduct
     // We take all the productDetails from Ph and assign it under latest
     // (we
-    public void displayShelf(ArrayList<ProductDetails> productHistory,
-                             ArrayList<Product> shelf) {
+    public void displayShelf(ArrayList<Product> shelf) {
         try {
             for (int i = 0; i < shelf.size(); i++) {
                 Product displayProduct = shelf.get(i);
@@ -106,11 +105,6 @@ public class Manager extends Person {
 
                     double autoAdjustedPrice = autoPriceAdjuster(elasticity, latest.getPriceAtTime());
                     displayProduct.setPrice(autoAdjustedPrice);
-                    // Add new item to productHistory
-                    // create new productDetail
-                    ProductDetails newProductDetails = new ProductDetails(displayProduct.getId(),
-                            latest.getDay() + 1, 0, autoAdjustedPrice);
-                    productHistory.add(newProductDetails);
 
                 } else {
                     System.out.println(" : No data.");

@@ -16,7 +16,7 @@ public class Shopper extends Person{
 
     public ArrayList<CartItem> addToCart(CartItem cartItem) {
         cart.add(cartItem);
-        System.out.println(cartItem.product.getName() +" has been added to your cart 🛒.");
+        System.out.println(cartItem.product.getName() +" has been added to cart 🛒.");
         return  cart;
     }
 
@@ -24,7 +24,7 @@ public class Shopper extends Person{
         double total = 0;
         for (int i = 0; i < cart.size(); i++) {
         CartItem cartItem = cart.get(i);
-            total += cartItem.currentPrice * cartItem.quantitySold;
+            total += cartItem.product.getPrice() * cartItem.quantityBought;
         }
         System.out.println("Total value of your cart is: £"+ total + " 🍞");
         return total;

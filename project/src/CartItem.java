@@ -1,12 +1,10 @@
 public class CartItem {
     Product product;
-    double currentPrice;
-    int quantitySold;
+    int quantityBought;
 
-    public CartItem(Product product, double currentPrice, int quantitySold) {
+    public CartItem(Product product, int quantityBought) {
         this.product = product;
-        this.currentPrice = currentPrice;
-        this.quantitySold = quantitySold;
+        this.quantityBought = quantityBought;
     }
 
 }
