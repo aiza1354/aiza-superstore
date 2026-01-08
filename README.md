@@ -1,70 +1,72 @@
-**Planning**
+**Aiza Superstore**
 * Classes
-  * Shopper class: 
-    * This will be a class controlled by the user. 
-    * The user will be assigned a few attributes of 2  shoppers with starkly different backgrounds. 
-    * For e.g:
-      * String Name
-      * String Gender 
-      * int Age
-      * String Income Bracket (Low/Medium/High) 
-      * boolean Financially Struggling (True/False)
-      * Throughout the 10 days, the user will make decision based on what they think is most appropriate. 
-  * Items Class
-    * Each day, on the shelves there will be 2 types of items. A necessity VS a luxury.
+    * `Person` Class:
+      * This will inherit the Shopper and Manager class and prove them will the following attributes: 
+        * String `name`
+          int `age`
+          String `gender`
+    * `Shopper` class: 
+      * This class will contain attributes for different Shoppers.
+      * It is going to be the child class of Person. (Person will inherit Shopper, and shopper will therefore share some attributes). 
+      * It is also connected to `CartItem` via composition. 
+      * The user will be assigned a few attributes of 3 shoppers with different backgrounds. 
+      * For e.g:
+        * (private) boolean `isLowIncome`
+        * Instead of making sensitive information public, this attribute will only be available through a getter. 
+        * Shopper and CartItem are connected through composition.
+        * There is a method called `addToCart` which uses an ArrayList of CartItem (s) to add different products to the shoppers cart. 
+        * There is also a method called `calculateTotal` which calculates the total price of a shopper's cart. 
+        * During the 10 days, the project will simulate what these shoppers by depending on their income, their and how elastic or inelastic they feel towards certain items. 
+    * `Manager` Class
+      * This class carries most of the methods. 
+      * A method called addProductToShelf uses the Type `Product` and add it to the ArrayList of `shelf`.
+      * addProductHistory uses the type ProductDetails' and add it the ArrayList of `productHistory`.
+      * calculatePED loops through `productHistory` and find the PED of each product by comparing the %change in price and %change in quantity sold.
+      * displayShelf loops through `shelf` and display the products.
+      * implementAdjustedPrice loops through `shelf` and changes the new-found price from `autoPriceAdjuster`.
+      * getLatestProductDetails loops through `productHistory` and returns the most recent details of any product.
+      * findElasticity uses double `PED` to find the elasticity of a product.
+      * autoPriceAdjuster uses the `elasticity` of a product to change its price to maximise revenue. 
+        * For example, if bread is inelastic, people will buy it no matter what, even if the price increases.
+    * `Product` Class
+      * Product is connected to `Manager` via aggregation. 
+      * It contains the attributes:
+        * String `name` 
+        * boolean `isNecessity` = true
+        * double `price`
+        * double `currentPED` 
+        * String `currentElasticity` = "Unknown"
+          * As these attributes are private, there are getters and setters for other classes to gain access to them. 
+      * Each day, on the shelves there will be 3 types of items. A necessity, a luxury and an addictive substance which comes under necessity (as those who are addicted must buy it).
       * For e.g: 
-        * An unknown addictive substance (Necessity)
+        * An addictive substance (Necessity)
         * Bread (Necessity)
         * Steak (Luxury)
-          * These will only have the attributes: 
-            * String nameOfItem
-            * boolean __ (Necessity VS Luxury) 
-            * Double price 
-  * Manager Class
-    * This class will be computer controlled. 
-    * And will decide after a day of purchase whether to increase/decrease or keep the price of an item unchanged depending on its demand and supply. 
-    * He will also decide how much stock to order.
-      * The manager class will have only 2 attributes: 
-        * String Name 
-        * int Age 
-          * These are not necessary, however,  we *need* attributes for a class. 
-  * FindingsArray/Queue Class
-    * This class will store the relative PED and PES of each item. 
-    * It will also store the history of prices in the LinkedList with the day of the price change in one List, all together. 
-    * In addition, it will show what the decision of the manager was in changing th price of the item. 
-  * DailyPurchasing Class
-    * It will have the attributes: 
-      * int day 
-      * String nameOfItem
-      * double priceAtDay 
-      * int quantitySold
-  * Main Class
-    * In our main we will have a range of different methods. 
-      * Introduction()
-        * This will introduce the store etc. 
-        * It will show the different people who are assigned to you. \
-      * changePrice()
-        * This will change the price as needed. 
-      * nextDay()
-        * This will change the day from for e.g day 1 to day 2. 
-        * It will implement a change in price if needed. 
-      * calculatePED() 
-        * This class will calculate the PED in relation to the change in demand (if there is any). 
-      * calculatePES() 
-        * This class will calculate the PES in relation to the change in supply. 
-      * showFindings() 
-        * This method will gather the data that has been put into the ___ Array and explain how price changes have affected the PED of the product as well as the PES. 
-      * exportFindings() 
-        * This method will convert what we know into a text file and show our findings. 
-  * Overview: What my objective is: 
-    * I want to prove the price elasticity of demand
-    * And if possible, the price elasticity of supply.
-    * I will use: 
-      * Data structures - Queues/LinkedList, ArrayList etc. 
-      * OOPs (completely)
-      * Local/DateTime
-      * File I/O (input/output)
-      * Maths package for calculations
-      * UML Diagram
-      * Exception Handling
-      * Data Validation
+    * `ProductDetails` Class
+      * This class is associated with Product. 
+      * It is connected with `Manager` via aggregation. 
+      * It contains the attributes: 
+        * private int `productId`
+          private int `day`
+          private int `quantitySold`
+          private double `priceAtTime`
+          * As these attributes are private, there are getters for other classes to gain access to them.
+    * `CartItem` Class
+      * Associated with Product.
+        * It will have the attributes: 
+          * Product `product`
+          * int `quantityBought`
+    * `Main Class`
+      * This is where we make our 3 products (bread, steak and addictiveSubstance)
+      * We create the ArrayLists of shelf, shoppersToday, productHistory 
+      * It calls all the different methods.
+    * Overview: 
+      * *This project proves the price elasticity of demand as depending on the elasticity of products, raising/decreasing its price allows greater revenue for my superStore.*
+      * I have used
+        * Data structures - ArrayList 
+        * OOPs (inheritance, aggregation, composition, polymorphism)
+        * Maths package for calculations
+        * (created) a UML Diagram
+        * Exception Handling
+        * Iteration 
+        * Data Validation
